@@ -2,6 +2,10 @@ module root.Views
 
 open Giraffe.ViewEngine
 
+let navbar () = 
+    nav[] [
+        h1 [] [ encodedText "navbar" ]
+    ]
 
 let masterLayout (pageTitle : string) (content: XmlNode list) = 
     html [] [
@@ -11,8 +15,10 @@ let masterLayout (pageTitle : string) (content: XmlNode list) =
                    _type "text/css"
                    _href "/main.css" ]
         ]
-        h1[] [ encodedText "this is the master layout" ]
-        body [] content
+        body [] [
+            navbar ()
+            div [] content
+        ]
     ]
 
 let index () = 
@@ -21,40 +27,15 @@ let index () =
     ] 
     |> masterLayout "Index"
 
-let blog (article : string) = 
+let blogArticle (article : string) = 
     [
+        h1 [] [encodedText (BlogArticle.getArticleTitle article)]
         div [] [rawText (BlogArticle.getMarkdown article)]
     ]
-    |> masterLayout "Blog"
+    |> masterLayout "Blog Article: xxx"
 
-let layout (content: XmlNode list) =
-    html [] [
-        head [] [
-            title []  [ encodedText "Blog" ]
-            link [ _rel  "stylesheet"
-                   _type "text/css"
-                   _href "/main.css" ]
-        ]
-        body [] content
-    ]
-
-let customLayout (content: XmlNode list) = 
-    html [] [
-        head [] [
-            title []  [ encodedText "Christians Page" ]
-            link [ _rel  "stylesheet"
-                   _type "text/css"
-                   _href "/main.css" ]
-        ]
-        body [] content
-    ]
-
-let partial () =
-    h1 [] [ encodedText "My personal blog website" ]
-
-let helloWorld (message : string) = 
+let blogPage () = 
     [
-        h1 [] [ encodedText message ]
-        p[] [encodedText "this is my first paragraph content"]
+        h1 [] [encodedText "show all articles here"]
     ]
-    |> customLayout
+    |> masterLayout "Blog"

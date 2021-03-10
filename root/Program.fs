@@ -14,37 +14,26 @@ open Giraffe
 // Web app
 // ---------------------------------
 
-//handler
-
 let indexHandler () = 
     Views.index () 
     |> htmlView 
 
-
-let blogHandler (article : string) = 
-    Views.blog article |> 
-    htmlView
-
-// let indexHandler (name : string) =
-//     let greetings = sprintf "Hello %s, from Giraffe!" name
-//     let view      = Views.index greetings
-//     htmlView view
-
-let staticHandler () = 
-    let x = "hello"
-    htmlView 
-
-let customHandler (message: string) = 
-    Views.helloWorld message
+let blogHanlder () = 
+    Views.blogPage ()
     |> htmlView
+
+
+let blogArticleHandler (article : string) = 
+    Views.blogArticle article |> htmlView
 
 let webApp =
     choose [
         GET >=>
             choose [
                 route "/" >=> indexHandler ()
-                routef "/blog/%s" blogHandler
-                route "/christian" >=> customHandler "F# to the moon"
+                route "/blog" >=> blogHanlder ()
+                routef "/blog/%s" blogArticleHandler
+                // route "/christian" >=> customHandler "F# to the moon"
             ]
         setStatusCode 404 >=> text "Not Found" ]
 
