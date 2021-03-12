@@ -24,7 +24,11 @@ let blogHanlder () =
 
 
 let blogArticleHandler (article : string) = 
-    Views.blogArticle article |> htmlView
+    try
+        Views.blogArticle article |> htmlView
+    with 
+       err -> Views.articleNotExisting () |> htmlView
+
 
 let webApp =
     choose [
@@ -45,6 +49,8 @@ let errorHandler (ex : Exception) (logger : ILogger) =
     logger.LogError(ex, "An unhandled exception has occurred while executing the request.")
     clearResponse >=> setStatusCode 500 >=> text ex.Message
 
+let error (ex : Exception) = 
+    clearResponse >=> setStatusCode 500 >=> text ex.Message
 // ---------------------------------
 // Config and Main
 // ---------------------------------

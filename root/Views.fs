@@ -21,18 +21,23 @@ let masterLayout (pageTitle : string) (content: XmlNode list) =
         ]
     ]
 
+let articleNotExisting () = 
+    [
+        p [] [encodedText "This article doesn't exist"]
+    ]
+    |> masterLayout "<ArticleNotFound/>"
+
 let index () = 
     [
         h1 [] [ encodedText "This is the index page" ]
     ] 
     |> masterLayout "Index"
 
-let blogArticle (article : string) = 
+let blogArticle (articleTitle : string) = 
     [
-        h1 [] [encodedText (BlogArticle.getArticleTitle article)]
-        div [] [rawText (BlogArticle.getMarkdown article)]
+        div [] [rawText (BlogArticle.getMarkdown articleTitle)]
     ]
-    |> masterLayout "Blog Article: xxx"
+    |> masterLayout articleTitle
 
 let blogPage () = 
     [
