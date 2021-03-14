@@ -5,6 +5,10 @@ open Giraffe.ViewEngine
 let navbar () = 
     nav[] [
         h1 [] [ encodedText "navbar" ]
+        ul[][
+            li [] [ a [ _href "/" ] [ encodedText "home" ] ]
+            li [] [ a [ _href "/blog" ] [ encodedText "blog" ] ]
+        ]
     ]
 
 let masterLayout (pageTitle : string) (content: XmlNode list) = 
@@ -39,8 +43,15 @@ let blogArticle (articleTitle : string) =
     ]
     |> masterLayout articleTitle
 
+        
+let articles () =
+    div [] (BlogArticle.getAllArticleTitles () 
+        |> Array.map (fun title -> p[] [encodedText title]) 
+        |> Array.toList)
+    
 let blogPage () = 
     [
         h1 [] [encodedText "show all articles here"]
+        articles ()
     ]
     |> masterLayout "Blog"
