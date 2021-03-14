@@ -42,13 +42,14 @@ let blogArticle (articleTitle : string) =
         div [] [rawText (BlogArticle.getMarkdown articleTitle)]
     ]
     |> masterLayout articleTitle
-
         
-let articles () =
-    div [] (BlogArticle.getAllArticleTitles () 
-        |> Array.map (fun title -> p[] [encodedText title]) 
-        |> Array.toList)
-    
+let articles () = 
+    div [] [
+        ul [] (BlogArticle.getAllArticleTitles () 
+            |> Array.map (fun title -> li [] [ a [ _href $"/blog/{fst title}" ] [ encodedText (snd title) ] ]) 
+            |> Array.toList)
+    ]
+
 let blogPage () = 
     [
         h1 [] [encodedText "show all articles here"]

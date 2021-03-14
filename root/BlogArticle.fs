@@ -8,6 +8,9 @@ let articlesFilePath = "./assets/"
 let fullArticleFilePath (fileName : string) = 
     $"{articlesFilePath}{fileName}"
 
+let readTitleFromFileName (fileName : string) = 
+    (fileName.Split "_").[3]
+
 //reads the title from within a file
 let readTitleFromFile (fileName : string) = 
     new System.IO.StreamReader (fullArticleFilePath fileName) 
@@ -30,12 +33,12 @@ let getMarkdown (fileName : string) =
     |> Markdown.Parse
     |> Markdown.ToHtml
 
-let getArticleCategory = "category"
+let getArticleCategoryFromFileName (fileName : string) = 
+    fileName.Split "_"
+    |> fun items -> (items.[items.Length - 1])
+    |> fun category -> (category.Split ".").[0]
 
 let getAllArticleTitles () = 
     System.IO.Directory.GetFiles(articlesFilePath)
     |> Array.map (fun x -> (System.IO.Path.GetFileName(x)))
-    |> Array.map (fun fileName -> readTitleFromFile fileName)
-
-//TODO
-//figure out a way to handle file not found exception 
+    |> Array.map (fun fileName -> ((readTitleFromFileName fileName), (readTitleFromFile fileName)))
