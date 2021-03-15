@@ -11,6 +11,10 @@ let fullArticleFilePath (fileName : string) =
 let readTitleFromFileName (fileName : string) = 
     (fileName.Split "_").[3]
 
+let readDateFromFileName (fileName : string) = 
+    let dateData = (fileName.Split "_").[0..2]
+    System.DateTime.Parse $"{dateData.[0]}-{dateData.[1]}-{dateData.[2]}"
+
 //reads the title from within a file
 let readTitleFromFile (fileName : string) = 
     new System.IO.StreamReader (fullArticleFilePath fileName) 
@@ -41,4 +45,5 @@ let getArticleCategoryFromFileName (fileName : string) =
 let getAllArticleTitles () = 
     System.IO.Directory.GetFiles(articlesFilePath)
     |> Array.map (fun x -> (System.IO.Path.GetFileName(x)))
+    // |> Array.sortByDescending (fun fileName -> readDateFromFileName fileName)
     |> Array.map (fun fileName -> ((readTitleFromFileName fileName), (readTitleFromFile fileName)))

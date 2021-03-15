@@ -2,6 +2,7 @@ module root.Views
 
 open Giraffe.ViewEngine
 
+
 let navbar () = 
     nav[] [
         h1 [] [ encodedText "navbar" ]
@@ -17,7 +18,7 @@ let masterLayout (pageTitle : string) (content: XmlNode list) =
             title []  [ encodedText pageTitle ]
             link [ _rel  "stylesheet"
                    _type "text/css"
-                   _href "/main.css" ]
+                   _href "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" ]
         ]
         body [] [
             navbar ()
